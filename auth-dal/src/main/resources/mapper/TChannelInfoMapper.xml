@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TChannelInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TChannelInfo">
+    <id     column="ID"             jdbcType="INTEGER"        property="id" />
+    <result column="CHANNEL_ID"     jdbcType="INTEGER"        property="channelId" />
+    <result column="CHANNEL_NAME"   jdbcType="VARCHAR"        property="channelName" />
+    <result column="CHANNEL_STATUS" jdbcType="VARCHAR"        property="channelStatus" />
+    <result column="CREATED_AT"     jdbcType="TIMESTAMP"      property="createdAt" />
+    <result column="CREATED_BY"     jdbcType="VARCHAR"        property="createdBy" />
+    <result column="UPDATED_AT"     jdbcType="TIMESTAMP"      property="updatedAt" />
+    <result column="UPDATED_BY"     jdbcType="VARCHAR"        property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CHANNEL_ID, CHANNEL_NAME, CHANNEL_STATUS, CREATED_AT, CREATED_BY, UPDATED_AT, 
+    UPDATED_BY
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_channel_info
+    where CHANNEL_ID = #{CHANNEL_ID,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.identity.auth.dal.model.TChannelInfo" keyProperty="id" useGeneratedKeys="true">
+    insert into t_channel_info ( CHANNEL_ID, CHANNEL_NAME,CHANNEL_STATUS, CREATED_AT, CREATED_BY)
+    values (#{channelId,jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR},#{channelStatus,jdbcType=VARCHAR}, CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TChannelInfo">
+    update t_channel_info
+    <set>
+      <if test="channelName != null">
+        CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelStatus != null">
+        CHANNEL_STATUS = #{channelStatus,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

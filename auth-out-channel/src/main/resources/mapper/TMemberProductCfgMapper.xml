@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TMemberProductCfgMapper">
+  <resultMap id="BaseResultMap" type="TMemberProductCfg">
+    <id     column="ID"                 jdbcType="INTEGER"          property="id" />
+    <result column="MEMBER_ID"          jdbcType="VARCHAR"          property="memberId" />
+    <result column="TERMINAL_ID"        jdbcType="VARCHAR"          property="terminalId" />
+    <result column="MEMBER_NAME"        jdbcType="VARCHAR"          property="memberName" />
+    <result column="SUB_PRODUCT_CODE"   jdbcType="VARCHAR"          property="subProductCode" />
+    <result column="FUNCTION_CODE"      jdbcType="VARCHAR"          property="functionCode" />
+    <result column="TAB_NAME"           jdbcType="VARCHAR"          property="tabName" />
+    <result column="COLUMN_FAMILY"      jdbcType="VARCHAR"          property="columnFamily" />
+    <result column="CFG_STATUS"         jdbcType="VARCHAR"          property="cfgStatus" />
+    <result column="BOX_FLAG"           jdbcType="VARCHAR"          property="boxFlag" />
+    <result column="CREATED_AT"         jdbcType="TIMESTAMP"        property="createdAt" />
+    <result column="CREATED_BY"         jdbcType="VARCHAR"          property="createdBy" />
+    <result column="UPDATED_AT"         jdbcType="TIMESTAMP"        property="updatedAt" />
+    <result column="UPDATED_BY"         jdbcType="VARCHAR"          property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MEMBER_ID, TERMINAL_ID,MEMBER_NAME, SUB_PRODUCT_CODE, FUNCTION_CODE, TAB_NAME, COLUMN_FAMILY,
+    CFG_STATUS,BOX_FLAG, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+  </sql>
+  <!--新增hbase业务查询配置-->
+  <insert id="insert" parameterType="TMemberProductCfg" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO T_MEMBER_PRODUCT_CFG (MEMBER_ID, TERMINAL_ID,MEMBER_NAME,SUB_PRODUCT_CODE, FUNCTION_CODE, TAB_NAME,
+      COLUMN_FAMILY, CFG_STATUS,BOX_FLAG, CREATED_AT, CREATED_BY )
+    VALUES (#{memberId,jdbcType=VARCHAR}, #{terminalId,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR},#{subProductCode,jdbcType=VARCHAR}, #{functionCode,jdbcType=VARCHAR}, #{tabName,jdbcType=VARCHAR},
+      #{columnFamily,jdbcType=VARCHAR}, #{cfgStatus,jdbcType=VARCHAR}, #{boxFlag,jdbcType=VARCHAR},CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <!--根据商户产品功能信息查询该商户配置信息-->
+  <select id="selectByProduct" resultMap="BaseResultMap" parameterType="TMemberProductCfg" >
+    SELECT <include refid="Base_Column_List" />
+    FROM T_MEMBER_PRODUCT_CFG
+    WHERE MEMBER_ID = #{memberId,jdbcType=VARCHAR}
+    AND FUNCTION_CODE = #{functionCode,jdbcType=VARCHAR}
+  </select>
+  <!--根据主键更新hbase业务查询配置-->
+  <update id="updateByPrimaryKeySelective" parameterType="TMemberProductCfg">
+    UPDATE T_MEMBER_PRODUCT_CFG
+    <set>
+      <if test="memberName != null">
+        MEMBER_NAME = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="subProductCode != null">
+        SUB_PRODUCT_CODE = #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="functionCode != null">
+        FUNCTION_CODE = #{functionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tabName != null">
+        TAB_NAME = #{tabName,jdbcType=VARCHAR},
+      </if>
+      <if test="columnFamily != null">
+        COLUMN_FAMILY = #{columnFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgStatus != null">
+        CFG_STATUS = #{cfgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="boxFlag != null">
+        BOX_FLAG = #{boxFlag,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--统计满足条件的记录数(分页查询)-->
+  <select id="selectCount" parameterType="TMemberProductCfg" resultType="Integer">
+    SELECT COUNT(ID) FROM T_MEMBER_PRODUCT_CFG
+    <where>
+      <trim>
+        <if test="memberName != null">
+          AND MEMBER_NAME like #{memberName,jdbcType=VARCHAR}
+        </if>
+        <if test="memberId != null">
+          AND MEMBER_ID like #{memberId,jdbcType=VARCHAR}
+        </if>
+        <if test="subProductCode != null">
+          AND SUB_PRODUCT_CODE = #{subProductCode,jdbcType=VARCHAR}
+        </if>
+        <if test="functionCode != null">
+          AND FUNCTION_CODE = #{functionCode,jdbcType=VARCHAR}
+        </if>
+        <if test="tabName != null">
+          AND TAB_NAME = #{tabName,jdbcType=VARCHAR}
+        </if>
+        <if test="cfgStatus != null">
+          AND CFG_STATUS = #{cfgStatus,jdbcType=VARCHAR}
+        </if>
+      </trim>
+    </where>
+  </select>
+
+  <!--分页查询-->
+  <select id="selectByPage" parameterType="Map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM T_MEMBER_PRODUCT_CFG
+    <where>
+      <trim>
+        <if test="query.memberName != null">
+          AND MEMBER_NAME like #{query.memberName,jdbcType=VARCHAR}
+        </if>
+        <if test="query.memberId != null">
+          AND MEMBER_ID like #{query.memberId,jdbcType=VARCHAR}
+        </if>
+        <if test="query.subProductCode != null">
+          AND SUB_PRODUCT_CODE = #{query.subProductCode,jdbcType=VARCHAR}
+        </if>
+        <if test="query.functionCode != null">
+          AND FUNCTION_CODE = #{query.functionCode,jdbcType=VARCHAR}
+        </if>
+        <if test="query.tabName != null">
+          AND TAB_NAME = #{query.tabName,jdbcType=VARCHAR}
+        </if>
+        <if test="query.cfgStatus != null">
+          AND CFG_STATUS = #{query.cfgStatus,jdbcType=VARCHAR}
+        </if>
+      </trim>
+    </where>
+    ORDER BY ID ASC
+    LIMIT #{pageDto.page},#{pageDto.pageNum}
+
+  </select>
+</mapper>

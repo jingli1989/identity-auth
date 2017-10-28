@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+      http://www.system.com/schema/tags/config
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+       default-lazy-init="false">
+    <!-- 自动扫描 -->
+    <context:component-scan
+            base-package="com.identity.auth.manager,
+            com.identity.auth.manager,
+            com.identity.auth.manager"/>
+
+
+
+    <!--数据库连接配置-->
+    <import resource="spring-datasources.xml"/>
+    <!--redis配置-->
+    <import resource="redis.xml"/>
+    <!--登录HBase服务器无证书授权时使用-->
+    <!--<import resource="spring-hbase.xml"/>-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>

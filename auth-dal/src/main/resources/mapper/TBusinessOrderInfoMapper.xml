@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TBusinessOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TBusinessOrderInfo">
+    <id     column="ID"               jdbcType="INTEGER"    property="id" />
+    <result column="BUSINESS_NO"      jdbcType="VARCHAR"    property="businessNo" />
+    <result column="TRADE_NO"         jdbcType="VARCHAR"    property="tradeNo" />
+    <result column="CHANNEL_ID"       jdbcType="VARCHAR"    property="channelId" />
+    <result column="FEE_FLAG"         jdbcType="VARCHAR"    property="feeFlag" />
+    <result column="CHANNEL_TIME"     jdbcType="INTEGER"    property="channelTime" />
+    <result column="REQ_NO"           jdbcType="VARCHAR"    property="reqNo" />
+    <result column="RES_CODE"         jdbcType="VARCHAR"    property="resCode" />
+    <result column="RES_MSG"          jdbcType="VARCHAR"    property="resMsg" />
+    <result column="RES_NO"           jdbcType="VARCHAR"    property="resNo" />
+    <result column="CREATED_AT"       jdbcType="TIMESTAMP"  property="createdAt" />
+    <result column="CREATED_BY"       jdbcType="VARCHAR"    property="createdBy" />
+    <result column="UPDATED_AT"       jdbcType="TIMESTAMP"  property="updatedAt" />
+    <result column="UPDATED_BY"       jdbcType="VARCHAR"    property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BUSINESS_NO, TRADE_NO, CHANNEL_ID, FEE_FLAG, CHANNEL_TIME, REQ_NO, RES_CODE, 
+    RES_MSG, RES_NO, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_business_order_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTradeNo" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_business_order_info
+    where TRADE_NO = #{tradeNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByBusinessNo" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_business_order_info
+    where BUSINESS_NO = #{businessNo,jdbcType=VARCHAR}
+  </select>
+
+  <!--新增业务流水-->
+  <insert id="insert" parameterType="com.identity.auth.dal.model.TBusinessOrderInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_business_order_info ( BUSINESS_NO, TRADE_NO,CHANNEL_ID,REQ_NO,CREATED_AT, CREATED_BY)
+    values ( #{businessNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR},#{channelId,jdbcType=VARCHAR},#{reqNo,jdbcType=VARCHAR},CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
+  </insert>
+  <!--根据id更新业务流水-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TBusinessOrderInfo">
+    update t_business_order_info
+    <set>
+      <if test="feeFlag != null">
+        FEE_FLAG = #{feeFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="channelTime != null">
+        CHANNEL_TIME = #{channelTime,jdbcType=INTEGER},
+      </if>
+      <if test="resCode != null">
+        RES_CODE = #{resCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resMsg != null">
+        RES_MSG = #{resMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="resNo != null">
+        RES_NO = #{resNo,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedAt != null">
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      </if>
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

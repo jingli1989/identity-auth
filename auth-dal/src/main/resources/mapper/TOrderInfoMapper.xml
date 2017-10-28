@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TOrderInfo">
+    <id     column="ID"                 jdbcType="INTEGER"      property="id" />
+    <result column="MEMBER_ID"          jdbcType="VARCHAR"      property="memberId" />
+    <result column="MEMBER_TRANS_ID"    jdbcType="VARCHAR"      property="memberTransId" />
+    <result column="MEMBER_TRANS_DATE"  jdbcType="TIMESTAMP"    property="memberTransDate" />
+    <result column="PRODUCT_ID"         jdbcType="VARCHAR"      property="productId" />
+    <result column="ORDER_MONEY"        jdbcType="INTEGER"      property="orderMoney" />
+    <result column="TRANS_NO"           jdbcType="VARCHAR"      property="transNo" />
+    <result column="BUSINESS_NO"        jdbcType="VARCHAR"      property="businessNo" />
+    <result column="ORDER_STATUS"       jdbcType="VARCHAR"      property="orderStatus" />
+    <result column="FEE_FLAG"           jdbcType="VARCHAR"      property="feeFlag" />
+    <result column="RES_CODE"           jdbcType="VARCHAR"      property="resCode" />
+    <result column="RES_MSG"            jdbcType="VARCHAR"      property="resMsg" />
+    <result column="CREATED_AT"         jdbcType="TIMESTAMP"    property="createdAt" />
+    <result column="CREATED_BY"         jdbcType="VARCHAR"      property="createdBy" />
+    <result column="UPDATED_AT"         jdbcType="TIMESTAMP"    property="updatedAt" />
+    <result column="UPDATED_BY"         jdbcType="VARCHAR"      property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MEMBER_ID, MEMBER_TRANS_ID, MEMBER_TRANS_DATE, PRODUCT_ID, ORDER_MONEY, TRANS_NO, 
+    BUSINESS_NO, ORDER_STATUS, FEE_FLAG, RES_CODE, RES_MSG, CREATED_AT, CREATED_BY, UPDATED_AT, 
+    UPDATED_BY
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.identity.auth.dal.model.TOrderInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_order_info (MEMBER_ID, MEMBER_TRANS_ID, MEMBER_TRANS_DATE, PRODUCT_ID, ORDER_MONEY,
+      TRANS_NO, ORDER_STATUS,  CREATED_AT, CREATED_BY)
+    values ( #{memberId,jdbcType=VARCHAR}, #{memberTransId,jdbcType=VARCHAR},
+      #{memberTransDate,jdbcType=TIMESTAMP}, #{productId,jdbcType=VARCHAR}, #{orderMoney,jdbcType=INTEGER}, 
+      #{transNo,jdbcType=VARCHAR},  #{orderStatus,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TOrderInfo">
+    update t_order_info
+    <set>
+      <if test="businessNo != null">
+        BUSINESS_NO = #{businessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        ORDER_STATUS = #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="feeFlag != null">
+        FEE_FLAG = #{feeFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="resCode != null">
+        RES_CODE = #{resCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resMsg != null">
+        RES_MSG = #{resMsg,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TProductChannelInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TProductChannelInfo">
+    <id     column="ID"           jdbcType="INTEGER"    property="id" />
+    <result column="CHANNEL_ID"   jdbcType="VARCHAR"    property="channelId" />
+    <result column="PRODUCT_ID"   jdbcType="VARCHAR"    property="productId" />
+    <result column="OPEN_STATUS"  jdbcType="VARCHAR"    property="openStatus" />
+    <result column="CREATED_AT"   jdbcType="TIMESTAMP"  property="createdAt" />
+    <result column="CREATED_BY"   jdbcType="VARCHAR"    property="createdBy" />
+    <result column="UPDATED_AT"   jdbcType="TIMESTAMP"  property="updatedAt" />
+    <result column="UPDATED_BY"   jdbcType="VARCHAR"    property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CHANNEL_ID, PRODUCT_ID, OPEN_STATUS, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_channel_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUnKey" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_product_channel_info
+    where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+    AND  CHANNEL_ID = #{channelId,jdbcType=VARCHAR}
+    <if test="openStatus != null">
+      AND  OPEN_STATUS = #{openStatus,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="selectByAll" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_product_channel_info
+    where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+    <if test="channelId != null">
+      AND  CHANNEL_ID = #{channelId,jdbcType=VARCHAR}
+    </if>
+    <if test="openStatus != null">
+      AND  OPEN_STATUS = #{openStatus,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_product_channel_info
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.identity.auth.dal.model.TProductChannelInfo" keyProperty="id" useGeneratedKeys="true">
+    insert into t_product_channel_info ( CHANNEL_ID, PRODUCT_ID,OPEN_STATUS, CREATED_AT, CREATED_BY)
+    values (#{channelId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR},#{openStatus,jdbcType=VARCHAR}, CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TProductChannelInfo">
+    update t_product_channel_info
+    <set>
+      <if test="channelId != null">
+        CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="openStatus != null">
+        OPEN_STATUS = #{openStatus,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectProductChannel" parameterType="Map" resultMap="BaseResultMap" >
+    SELECT
+    t_product_channel_info tpci ,
+    t_product_info tpi,
+    t_channel_info tci
+    WHERE tpci.PRODUCT_ID = tpi.PRODUCT_ID
+    AND tpci.CHANNEL_ID = tci.CHANNEL_ID
+    AND tpci.OPEN_STATUS = #{openStatus,jdbcType=VARCHAR}
+    AND tpi.PRODUCT_STATUS = #{openStatus,jdbcType=VARCHAR}
+    AND tci.CHANNEL_STATUS = #{openStatus,jdbcType=VARCHAR}
+    AND tpci.PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

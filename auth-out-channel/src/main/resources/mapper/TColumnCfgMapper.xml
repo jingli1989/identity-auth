@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TColumnCfgMapper">
+  <resultMap id="BaseResultMap" type="TColumnCfg">
+    <id     column="ID"           jdbcType="INTEGER"       property="id" />
+    <result column="CFG_ID"       jdbcType="INTEGER"       property="cfgId" />
+    <result column="COL_NAME"     jdbcType="VARCHAR"       property="colName" />
+    <result column="OUT_NAME"     jdbcType="VARCHAR"       property="outName" />
+    <result column="SPLIT_BOX"    jdbcType="VARCHAR"       property="splitBox" />
+    <result column="BOX_TYPE"     jdbcType="VARCHAR"       property="boxType" />
+    <result column="CREATED_AT"   jdbcType="TIMESTAMP"     property="createdAt" />
+    <result column="CREATED_BY"   jdbcType="VARCHAR"       property="createdBy" />
+    <result column="UPDATED_AT"   jdbcType="TIMESTAMP"     property="updatedAt" />
+    <result column="UPDATED_BY"   jdbcType="VARCHAR"       property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CFG_ID, COL_NAME,OUT_NAME, SPLIT_BOX,BOX_TYPE, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+  </sql>
+  <!--根据配置id查询该业务的所有列配置信息-->
+  <select id="selectByCfgId" parameterType="Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM T_COLUMN_CFG
+    WHERE CFG_ID = #{cfgId,jdbcType=INTEGER}
+  </select>
+  <!--根据主键和配置id删除列配置项-->
+  <delete id="deleteByPrimaryKey" parameterType="Map">
+    DELETE FROM T_COLUMN_CFG
+    WHERE ID = #{id,jdbcType=INTEGER}
+    AND CFG_ID = #{cfgId,jdbcType=INTEGER}
+  </delete>
+  <!--根据配置id删除该配置的所有列配置项-->
+  <delete id="deleteByCfgId" parameterType="Map">
+    DELETE FROM T_COLUMN_CFG
+    WHERE CFG_ID = #{cfgId,jdbcType=INTEGER}
+  </delete>
+  <!--新增列配置项-->
+  <insert id="insert" parameterType="TColumnCfg" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO T_COLUMN_CFG ( CFG_ID, COL_NAME,OUT_NAME, SPLIT_BOX,BOX_TYPE, CREATED_AT, CREATED_BY)
+    VALUES ( #{cfgId,jdbcType=INTEGER}, #{colName,jdbcType=VARCHAR},#{outName,jdbcType=VARCHAR},#{splitBox,jdbcType=VARCHAR},
+    #{boxType,jdbcType=VARCHAR},CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
+  </insert>
+  <!--批量新增列配置项-->
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+    INSERT INTO T_COLUMN_CFG ( CFG_ID, COL_NAME,OUT_NAME,SPLIT_BOX,BOX_TYPE, CREATED_AT, CREATED_BY)
+    VALUES
+    <foreach collection="list" index="index" item="item" separator=",">
+      (#{item.cfgId,jdbcType=INTEGER}, #{item.colName,jdbcType=VARCHAR},#{item.outName,jdbcType=VARCHAR},#{item.splitBox,jdbcType=VARCHAR},
+      #{item.boxType,jdbcType=VARCHAR},CURRENT_TIMESTAMP , #{item.createdBy,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <!--根据主键更新列配置项信息-->
+  <update id="updateByPrimaryKeySelective" parameterType="TColumnCfg">
+    update T_COLUMN_CFG
+    <set>
+      <if test="colName != null">
+        COL_NAME = #{colName,jdbcType=VARCHAR},
+      </if>
+      <if test="outName != null">
+        OUT_NAME = #{outName,jdbcType=VARCHAR},
+      </if>
+      <if test="splitBox != null">
+        SPLIT_BOX = #{splitBox,jdbcType=VARCHAR},
+      </if>
+      <if test="boxType != null">
+        BOX_TYPE = #{boxType,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

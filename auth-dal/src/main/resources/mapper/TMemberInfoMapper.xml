@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TMemberInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TMemberInfo">
+    <id     column="ID"             jdbcType="INTEGER"    property="id" />
+    <result column="MEMBER_ID"      jdbcType="VARCHAR"    property="memberId" />
+    <result column="MEMBER_NAME"    jdbcType="VARCHAR"    property="memberName" />
+    <result column="SHORT_NAME"     jdbcType="VARCHAR"    property="shortName" />
+    <result column="MEMBER_STATUS"  jdbcType="VARCHAR"    property="memberStatus" />
+    <result column="SECURITY_KEY"   jdbcType="VARCHAR"    property="securityKey" />
+    <result column="CONTACTS"       jdbcType="VARCHAR"    property="contacts" />
+    <result column="TEL_NUMBER"     jdbcType="VARCHAR"    property="telNumber" />
+    <result column="PHONE_NUM"      jdbcType="VARCHAR"    property="phoneNum" />
+    <result column="CITY_NAME"      jdbcType="VARCHAR"    property="cityName" />
+    <result column="COMPANY_ADDR"   jdbcType="VARCHAR"    property="companyAddr" />
+    <result column="CREATED_AT"     jdbcType="TIMESTAMP"  property="createdAt" />
+    <result column="CREATED_BY"     jdbcType="VARCHAR"    property="createdBy" />
+    <result column="UPDATED_AT"     jdbcType="TIMESTAMP"  property="updatedAt" />
+    <result column="UPDATED_BY"     jdbcType="VARCHAR"    property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MEMBER_ID, MEMBER_NAME, SHORT_NAME, MEMBER_STATUS,SECURITY_KEY, CONTACTS, TEL_NUMBER, PHONE_NUM,
+    CITY_NAME, COMPANY_ADDR, CREATED_AT, CREATED_BY, UPDATED_AT, UPDATED_BY
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_member_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByMemberId" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_member_info
+    where MEMBER_ID = #{memberId,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.identity.auth.dal.model.TMemberInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_member_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="memberName != null">
+        MEMBER_NAME,
+      </if>
+      <if test="shortName != null">
+        SHORT_NAME,
+      </if>
+      <if test="memberStatus != null">
+        MEMBER_STATUS,
+      </if>
+      <if test="securityKey != null" >
+        SECURITY_KEY,
+      </if>
+      <if test="contacts != null">
+        CONTACTS,
+      </if>
+      <if test="telNumber != null">
+        TEL_NUMBER,
+      </if>
+      <if test="phoneNum != null">
+        PHONE_NUM,
+      </if>
+      <if test="cityName != null">
+        CITY_NAME,
+      </if>
+      <if test="companyAddr != null">
+        COMPANY_ADDR,
+      </if>
+        CREATED_AT,
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberStatus != null">
+        #{memberStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="securityKey != null">
+        #{securityKey,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="telNumber != null">
+        #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddr != null">
+        #{companyAddr,jdbcType=VARCHAR},
+      </if>
+        CURRENT_TIMESTAMP ,
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TMemberInfo">
+    update t_member_info
+    <set>
+      <if test="memberId != null">
+        MEMBER_ID = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        MEMBER_NAME = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        SHORT_NAME = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberStatus != null">
+        MEMBER_STATUS = #{memberStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="securityKey != null" >
+        SECURITY_KEY =  #{securityKey,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        CONTACTS = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="telNumber != null">
+        TEL_NUMBER = #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null">
+        PHONE_NUM = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        CITY_NAME = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddr != null">
+        COMPANY_ADDR = #{companyAddr,jdbcType=VARCHAR},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,32 @@
+spring:
+  http:
+    encoding:
+      charset: utf-8
+      force: false
+      enabled: false
+  mvc:
+    favicon:
+      enabled: false
+  jmx:
+    enabled: false
+
+server:
+  port: 31102
+  context-path: /credit-hbase-service
+  ssl:
+    enabled: false
+  error:
+    whitelabel:
+      enabled: false
+
+management:
+  port: 54001
+  health:
+    mail:
+      enabled: false
+info:
+  app:
+    name: "@parent.artifactId@" #从pom.xml中获取
+    description: "@project.description@"
+    version: "@project.version@"
+    spring-boot-version: "@spring.boot.version@"

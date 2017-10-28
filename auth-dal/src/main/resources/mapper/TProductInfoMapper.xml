@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.TProductInfoMapper">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.TProductInfo">
+    <id     column="ID"             jdbcType="INTEGER"    property="id" />
+    <result column="PRODUCT_ID"     jdbcType="VARCHAR"    property="productId" />
+    <result column="PRODUCT_STATUS" jdbcType="VARCHAR"    property="productStatus" />
+    <result column="PRODUCT_NAME"   jdbcType="VARCHAR"    property="productName" />
+    <result column="UNIT_PRICE"     jdbcType="INTEGER"    property="unitPrice" />
+    <result column="CREATED_AT"     jdbcType="TIMESTAMP"  property="createdAt" />
+    <result column="CREATED_BY"     jdbcType="VARCHAR"    property="createdBy" />
+    <result column="UPDATED_AT"     jdbcType="TIMESTAMP"  property="updatedAt" />
+    <result column="UPDATED_BY"     jdbcType="VARCHAR"    property="updatedBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, PRODUCT_ID, PRODUCT_STATUS, PRODUCT_NAME, UNIT_PRICE, CREATED_AT, CREATED_BY, 
+    UPDATED_AT, UPDATED_BY
+  </sql>
+  <select id="selectByProductId" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_info
+    where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insert" parameterType="com.identity.auth.dal.model.TProductInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_product_info (PRODUCT_ID, PRODUCT_STATUS,PRODUCT_NAME, UNIT_PRICE, CREATED_AT,CREATED_BY)
+    values ( #{productId,jdbcType=VARCHAR}, #{productStatus,jdbcType=VARCHAR},
+      #{productName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=INTEGER}, CURRENT_TIMESTAMP ,#{createdBy,jdbcType=VARCHAR}}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.member.model.TProductInfo">
+    update t_product_info
+    <set>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productStatus != null">
+        PRODUCT_STATUS = #{productStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        UNIT_PRICE = #{unitPrice,jdbcType=INTEGER},
+      </if>
+        UPDATED_AT = CURRENT_TIMESTAMP ,
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
