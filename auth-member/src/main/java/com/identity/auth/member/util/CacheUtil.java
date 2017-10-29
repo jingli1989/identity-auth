@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.identity.auth.member.model.ChannelInfoResDTO;
 import com.identity.auth.member.model.MemberInfoResDTO;
 import com.identity.auth.member.model.MemberProductCheckResDTO;
+import com.identity.auth.member.model.ProductInfoResDTO;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +27,17 @@ public class CacheUtil {
             //构建cache实例
             .build();
 
-    private final static Cache<String, MemberProductCheckResDTO> memberProductCache = CacheBuilder.newBuilder()
+    private final static Cache<String, ProductInfoResDTO> productCache = CacheBuilder.newBuilder()
+            //设置cache的初始大小为10，要合理设置该值
+            .initialCapacity(0)
+            //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
+            .concurrencyLevel(5)
+            //设置cache中的数据在写入之后的存活时间为10秒
+            .expireAfterWrite(60*60, TimeUnit.SECONDS)
+            //构建cache实例
+            .build();
+
+    private final static Cache<String, MemberProductCheckResDTO> memberProductCheckCache = CacheBuilder.newBuilder()
             //设置cache的初始大小为10，要合理设置该值
             .initialCapacity(0)
             //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
@@ -72,7 +83,7 @@ public class CacheUtil {
      */
     public static MemberProductCheckResDTO getMemberProduct(String memberId, String productId){
         String key = memberId+"_"+productId;
-        return memberProductCache.getIfPresent(key);
+        return memberProductCheckCache.getIfPresent(key);
     }
 
     /**
@@ -81,7 +92,27 @@ public class CacheUtil {
      */
     public static void cacheMemberProduct(MemberProductCheckResDTO resDTO){
         String key = resDTO.getMemberId()+"_"+resDTO.getProductId();
-        memberProductCache.put(key,resDTO);
+        memberProductCheckCache.put(key,resDTO);
+    }
+
+    /**
+     * 获取缓存中商户产品信息
+     * @param memberId 商户id
+     * @param productId 产品id
+     * @return 商户产品信息
+     */
+    public static ProductInfoResDTO getProduct(String memberId, String productId){
+        String key = memberId+"_"+productId;
+        return productCache.getIfPresent(key);
+    }
+
+    /**
+     * 缓存产品信息
+     * @param resDTO 产品信息
+     */
+    public static void cacheProduct(ProductInfoResDTO resDTO){
+        String key = resDTO.getMemberId()+"_"+resDTO.getProductId();
+        productCache.put(key,resDTO);
     }
 
     /**

@@ -17,6 +17,9 @@ import java.io.Serializable;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductInfoResDTO implements Serializable{
+    /** 商户号 */
+    @JsonProperty("member_id")
+    private String memberId;
     /** 产品编号 */
     @JsonProperty("product_id")
     private String productId;

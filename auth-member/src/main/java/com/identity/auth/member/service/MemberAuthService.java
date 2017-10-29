@@ -89,13 +89,18 @@ public class MemberAuthService implements MemberAuthFacade {
     public IdentityAuthResult<ProductInfoResDTO> productCheck(String memberId, String productId,String logId) {
         try {
             LogUtil.updateLogId(logId);
-            log.info("商户:{},进行商户产品校验",memberId);
+            log.info("商户:{},产品:{},进行商户产品校验",memberId,productId);
+            ProductInfoResDTO resDTO = CacheUtil.getProduct(memberId, productId);
+            if(resDTO!=null){
+                return new IdentityAuthResult<>(resDTO);
+            }
             List<TMemberProductInfo> memberProductInfoList = memberProductManager.selectAndCheckMemberProduct(memberId,productId);
             if(memberProductInfoList==null||memberProductInfoList.isEmpty()){
                 return new IdentityAuthResult<>(ErrorCodeEnum.MEMBER_PRODUCT_NOT_EXITS.getCode(),ErrorCodeEnum.MEMBER_PRODUCT_NOT_EXITS.getMsg());
             }
             TMemberProductInfo productInfo = memberProductInfoList.get(0);
-            ProductInfoResDTO resDTO = BeanMapperUtil.objConvert(productInfo,ProductInfoResDTO.class);
+            resDTO = BeanMapperUtil.objConvert(productInfo,ProductInfoResDTO.class);
+            CacheUtil.cacheProduct(resDTO);
             return new IdentityAuthResult<>(resDTO);
         }catch (BusinessException be){
             return new IdentityAuthResult<>(be.getCode(),be.getResMessage());

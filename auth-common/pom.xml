@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>auth-common</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <!--<version>${auth.common.version}</version>-->
 
     <dependencies>
         <dependency>
@@ -36,6 +36,10 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
         </dependency>
     </dependencies>
     <build>

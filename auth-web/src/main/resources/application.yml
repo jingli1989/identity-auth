@@ -12,7 +12,7 @@ spring:
 
 server:
   port: 31102
-  context-path: /credit-hbase-service
+  context-path: /identity-auth
   ssl:
     enabled: false
   error:

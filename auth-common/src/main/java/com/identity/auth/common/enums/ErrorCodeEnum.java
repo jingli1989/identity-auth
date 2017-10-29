@@ -31,6 +31,8 @@ public enum ErrorCodeEnum {
     PRODUCT_CHANNEL_NOT_EXITS("PRODUCT_CHANNEL_NOT_EXITS","产品渠道不存在或状态为禁用"),
     PRODUCT_CHANNEL_IS_EXITS("PRODUCT_CHANNEL_IS_EXITS","产品渠道已存在"),
 
+    TRANS_ID_IS_EXITS("TRANS_ID_IS_EXITS","商户订单号已存在"),
+
     /** 数据库异常 */
     DB_DATA_IS_EXITS("DB_DATA_IS_EXITS","数据已经存在"),
     DB_DATA_NOT_EXITS("DB_DATA_NOT_EXITS","数据不存在"),

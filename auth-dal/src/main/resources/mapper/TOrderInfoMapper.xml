@@ -8,7 +8,7 @@
     <result column="MEMBER_TRANS_DATE"  jdbcType="TIMESTAMP"    property="memberTransDate" />
     <result column="PRODUCT_ID"         jdbcType="VARCHAR"      property="productId" />
     <result column="ORDER_MONEY"        jdbcType="INTEGER"      property="orderMoney" />
-    <result column="TRANS_NO"           jdbcType="VARCHAR"      property="transNo" />
+    <result column="TRADE_NO"           jdbcType="VARCHAR"      property="tradeNo" />
     <result column="BUSINESS_NO"        jdbcType="VARCHAR"      property="businessNo" />
     <result column="ORDER_STATUS"       jdbcType="VARCHAR"      property="orderStatus" />
     <result column="FEE_FLAG"           jdbcType="VARCHAR"      property="feeFlag" />
@@ -20,7 +20,7 @@
     <result column="UPDATED_BY"         jdbcType="VARCHAR"      property="updatedBy" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, MEMBER_ID, MEMBER_TRANS_ID, MEMBER_TRANS_DATE, PRODUCT_ID, ORDER_MONEY, TRANS_NO, 
+    ID, MEMBER_ID, MEMBER_TRANS_ID, MEMBER_TRANS_DATE, PRODUCT_ID, ORDER_MONEY, TRADE_NO,
     BUSINESS_NO, ORDER_STATUS, FEE_FLAG, RES_CODE, RES_MSG, CREATED_AT, CREATED_BY, UPDATED_AT, 
     UPDATED_BY
   </sql>
@@ -34,10 +34,10 @@
 
   <insert id="insert" parameterType="com.identity.auth.dal.model.TOrderInfo" useGeneratedKeys="true" keyProperty="id">
     insert into t_order_info (MEMBER_ID, MEMBER_TRANS_ID, MEMBER_TRANS_DATE, PRODUCT_ID, ORDER_MONEY,
-      TRANS_NO, ORDER_STATUS,  CREATED_AT, CREATED_BY)
+      TRADE_NO, ORDER_STATUS,  CREATED_AT, CREATED_BY)
     values ( #{memberId,jdbcType=VARCHAR}, #{memberTransId,jdbcType=VARCHAR},
       #{memberTransDate,jdbcType=TIMESTAMP}, #{productId,jdbcType=VARCHAR}, #{orderMoney,jdbcType=INTEGER}, 
-      #{transNo,jdbcType=VARCHAR},  #{orderStatus,jdbcType=VARCHAR},
+      #{tradeNo,jdbcType=VARCHAR},  #{orderStatus,jdbcType=VARCHAR},
       CURRENT_TIMESTAMP , #{createdBy,jdbcType=VARCHAR})
   </insert>
 
@@ -67,4 +67,40 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBySelective" parameterType="com.identity.auth.dal.model.TOrderInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order_info
+    <where>
+      <if test="memberId != null">
+        AND MEMBER_ID = #{memberId,jdbcType=VARCHAR}
+      </if>
+      <if test="memberTransId != null">
+        AND MEMBER_TRANS_ID = #{memberTransId,jdbcType=VARCHAR}
+      </if>
+      <if test="productId != null">
+        AND PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+      </if>
+      <if test="tradeNo != null">
+        AND TRADE_NO = #{tradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="businessNo != null">
+        AND BUSINESS_NO = #{businessNo,jdbcType=VARCHAR}
+      </if>
+      <if test="orderStatus != null">
+        AND ORDER_STATUS = #{orderStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="feeFlag != null">
+        AND FEE_FLAG = #{feeFlag,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByMemberTrans" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order_info
+    WHERE MEMBER_ID = #{memberId,jdbcType=VARCHAR} AND MEMBER_TRANS_ID = #{memberTransId,jdbcType=VARCHAR}
+  </select>
 </mapper>

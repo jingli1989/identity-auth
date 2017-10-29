@@ -33,7 +33,7 @@ public class TOrderInfo implements Serializable {
     private Integer orderMoney;
 
     /** 系统流水 */
-    private String transNo;
+    private String tradeNo;
 
     /** 业务流水 */
     private String businessNo;

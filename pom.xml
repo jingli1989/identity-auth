@@ -53,6 +53,7 @@
         <HikariCP.version>2.6.3</HikariCP.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
 
+        <org.springframework.version>4.2.1.RELEASE</org.springframework.version>
     </properties>
 
     <dependencyManagement>
@@ -100,6 +101,11 @@
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${org.springframework.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
             <dependency>
@@ -229,18 +235,24 @@
                 <version>1.8.12</version>
             </dependency>
             <!--切面 end-->
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <!--所有模块都使用的jar-->
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>auth-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -256,21 +268,9 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>identity_auth</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.identity.auth.web.AppService</mainClass>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

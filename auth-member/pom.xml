@@ -10,12 +10,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>auth-member</artifactId>
-    <version>${auth.member.version}</version>
 
     <dependencies>
         <dependency>
             <groupId>com.identity.auth</groupId>
             <artifactId>auth-dal</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.identity.auth</groupId>
+            <artifactId>auth-common</artifactId>
         </dependency>
 
         <!--spring boot-->
@@ -36,12 +39,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -59,20 +56,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <!-- 配合项目中的generatorConfig.xml，使用[mvn mybatis-generator:generate]来生成dao和mapper文件 -->
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.28</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
