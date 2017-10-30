@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Setter
 @ToString(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IdentityAuthReqDTO implements Serializable{
+public class IdentityAuthReqDTO extends BaseReqDTO implements Serializable{
     /** 身份证 */
     @JsonProperty("id_card")
     @NotBlank(message = "身份证号码不能为空")

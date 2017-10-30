@@ -33,7 +33,25 @@ public class VerifyParamUtil {
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
         if (violations.size() == 0) return;
         for (ConstraintViolation<Object> violation : violations) {
+
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR.getCode(), violation.getMessage());
+        }
+        log.info("基本数据验证耗时:{}", System.currentTimeMillis() - start);
+    }
+
+    /**
+     * 请求参数非空、格式验证，请求对象
+     *
+     * @param object 请求校验参数
+     */
+    public static void validateObjectFilter(Object object,Set<String> filterSet) {
+        long start = System.currentTimeMillis();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Object>> violations = validator.validate(object);
+        if (violations.size() == 0) return;
+        for (ConstraintViolation<Object> violation : violations) {
+            if(!filterSet.contains(violation.getPropertyPath().toString()))
+                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR.getCode(), violation.getMessage());
         }
         log.info("基本数据验证耗时:{}", System.currentTimeMillis() - start);
     }
