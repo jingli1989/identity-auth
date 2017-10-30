@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private IdentityAuthService identityAuthService;
+
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+
 
         String context = httpServletRequest.getHeader("AUTH-CONTEXT");
         String memberId = httpServletRequest.getHeader("AUTH-MEMBER");

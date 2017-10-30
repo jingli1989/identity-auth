@@ -1,4 +1,7 @@
-package com.identity.auth.utils;
+package com.identity.auth.test.util;
+
+
+
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -41,7 +44,6 @@ public class RetrofitUtil {
                 return chain.proceed(b.build());
             }
         };
-
         X509TrustManager xtm = new X509TrustManager() {
             @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) {

@@ -11,7 +11,7 @@ spring:
     enabled: false
 
 server:
-  port: 31102
+  port: 33102
   context-path: /identity-auth
   ssl:
     enabled: false
@@ -20,7 +20,7 @@ server:
       enabled: false
 
 management:
-  port: 54001
+  port: 33103
   health:
     mail:
       enabled: false

@@ -12,10 +12,10 @@
       http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
        default-lazy-init="false">
-    <!-- 自动扫描 -->
-    <context:component-scan
-            base-package="
-            com.identity.auth.web,com.identity.auth.aspect,com.identity.auth.common.annotation"/>
+    <!--&lt;!&ndash; 自动扫描 &ndash;&gt;-->
+    <!--<context:component-scan-->
+            <!--base-package="-->
+            <!--com.identity.auth.web,com.identity.auth.aspect,com.identity.auth.common.annotation"/>-->
 
 
 
@@ -23,13 +23,13 @@
     <!--<import resource="spring-datasources.xml"/>-->
     <!--登录HBase服务器无证书授权时使用-->
     <!--<import resource="spring-hbase.xml"/>-->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/identity/**"/>
-            <mvc:exclude-mapping path="/index/**"/>
-            <bean class="com.identity.auth.web.interceptor.AuthInterceptor" />
-        </mvc:interceptor>
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/identity/**"/>-->
+            <!--<mvc:exclude-mapping path="/index/**"/>-->
+            <!--<bean class="com.identity.auth.web.interceptor.AuthInterceptor" />-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
 </beans>
