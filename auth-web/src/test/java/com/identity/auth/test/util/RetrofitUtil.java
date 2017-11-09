@@ -9,6 +9,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -93,7 +94,7 @@ public class RetrofitUtil {
         Retrofit retrofit = new Retrofit
                 .Builder()
                 .baseUrl(apiBaseUrl)
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .client(client)
                 .build();
 

@@ -1,7 +1,7 @@
 package com.identity.auth.test.http;
 
 import com.identity.auth.common.util.VerifyParamUtil;
-import com.identity.auth.model.req.IdentityAuthReqDTO;
+import com.identity.auth.service.model.req.IdentityAuthReqDTO;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,8 +1,9 @@
 package com.identity.auth.test.http;
 
-import com.identity.auth.common.util.IdentityAuthResult;
-import com.identity.auth.model.req.IdentityAuthReqDTO;
-import com.identity.auth.model.res.IdentityAuthResDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.identity.auth.common.util.HMacSHAUtil;
+import com.identity.auth.service.model.req.IdentityAuthReqDTO;
 import com.identity.auth.test.api.IdentityAuthApi;
 import com.identity.auth.test.util.ResUtil;
 import com.identity.auth.test.util.RetrofitUtil;
@@ -41,10 +42,13 @@ public class TestHttp {
      * 查询
      */
     @Test
-    public void query(){
+    public void query() throws JsonProcessingException {
         IdentityAuthReqDTO reqDTO = new IdentityAuthReqDTO();
 //        log.info("查询配置测试-请求参数:reqDTO:{}",reqDTO);
-        Call<IdentityAuthResult<IdentityAuthResDTO>> call = api.auth("123","321",reqDTO);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String reqStr = objectMapper.writeValueAsString(reqDTO);
+        String pwd = HMacSHAUtil.HMacSHA256(reqStr,"123");
+        Call<String> call = api.auth("123",pwd,reqStr);
         ResUtil.printRes(call);
     }
 }

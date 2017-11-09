@@ -15,7 +15,7 @@
     <!--&lt;!&ndash; 自动扫描 &ndash;&gt;-->
     <!--<context:component-scan-->
             <!--base-package="-->
-            <!--com.identity.auth.web,com.identity.auth.aspect,com.identity.auth.common.annotation"/>-->
+            <!--com.identity.auth.com.identity.auth.service.aspectpect,com.identity.auth.common.annotation"/>-->
 
 
 
