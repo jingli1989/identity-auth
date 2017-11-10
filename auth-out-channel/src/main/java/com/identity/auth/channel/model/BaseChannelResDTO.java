@@ -21,7 +21,9 @@ public class BaseChannelResDTO implements Serializable{
     /** 渠道响应流水号 */
     private String channelResNo;
     /** 渠道处理耗时 (ms)*/
-    private long channelTime;
+    private Integer channelTime;
+    /** 渠道收费标识 */
+    private Boolean channelFee;
     /** 渠道响应code */
     private String resCode;
     /** 渠道响应描述 */

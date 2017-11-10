@@ -12,12 +12,12 @@ import com.identity.auth.member.api.MemberAuthFacade;
 import com.identity.auth.member.model.ChannelInfoResDTO;
 import com.identity.auth.member.model.MemberInfoResDTO;
 import com.identity.auth.member.model.ProductInfoResDTO;
-import com.identity.auth.service.enums.FeeFlagEnum;
-import com.identity.auth.service.enums.ResCodeEnum;
 import com.identity.auth.service.manager.OrderManager;
+import com.identity.auth.service.model.ChannelProcessDTO;
 import com.identity.auth.service.model.HeaderAuthDTO;
 import com.identity.auth.service.model.req.IdentityAuthReqDTO;
 import com.identity.auth.service.model.res.IdentityAuthResDTO;
+import com.identity.auth.service.process.IdentityProcess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +40,9 @@ public class IdentityAuthService {
     /** 渠道信息服务 */
     @Autowired
     private ChannelFacade channelFacade;
+    /** 渠道认证处理 */
+    @Autowired
+    private IdentityProcess identityProcess;
 
     public IdentityAuthResDTO authReq(IdentityAuthReqDTO reqDTO,String reqBody, HeaderAuthDTO authDTO){
         IdentityAuthResult<MemberInfoResDTO> result = memberAuthFacade.memberCheck(reqDTO.getMemberId(), LogUtil.getLogId());
@@ -64,28 +67,28 @@ public class IdentityAuthService {
         }
         ChannelInfoResDTO channelInfoResDTO = channelResult.getData().get(0);
 
-        IdentityAuthResDTO authResDTO = channelProcess(reqDTO,channelInfoResDTO,orderInfo);
-
-        orderManager.updateSuccessOrder(authResDTO,"",orderInfo);
-
+        ChannelProcessDTO processDTO = identityProcess.channelAuth(orderInfo.getTradeNo(),reqDTO,channelInfoResDTO);
+        IdentityAuthResDTO authResDTO = buildResDTO(processDTO,reqDTO,orderInfo);
+        orderManager.updateSuccessOrder(authResDTO,processDTO.getBusinessNo(),orderInfo);
         return authResDTO;
 
     }
 
-
-    private IdentityAuthResDTO channelProcess(IdentityAuthReqDTO reqDTO,ChannelInfoResDTO channelInfoResDTO,TOrderInfo orderInfo){
-        //todo 渠道请求
+    /**
+     * 构建认证响应
+     * @param processDTO 渠道处理结果
+     * @param reqDTO 请求信息
+     * @param orderInfo 订单信息
+     * @return 认证响应
+     */
+    private IdentityAuthResDTO buildResDTO(ChannelProcessDTO processDTO,IdentityAuthReqDTO reqDTO,TOrderInfo orderInfo){
         IdentityAuthResDTO resDTO = BeanMapperUtil.objConvert(reqDTO,IdentityAuthResDTO.class);
-
-
-
-        resDTO.setFeeFlag(FeeFlagEnum.Y.getCode());
+        resDTO.setFeeFlag(processDTO.getFeeFlag());
+        resDTO.setResCode(processDTO.getResCode());
+        resDTO.setResMsg(processDTO.getResMsg());
         resDTO.setOrderMoney(orderInfo.getOrderMoney()+"");
         resDTO.setTradeNo(orderInfo.getTradeNo());
-        resDTO.setResCode(ResCodeEnum.MATE.getCode());
-        resDTO.setResMsg(ResCodeEnum.MATE.getDesc());
         return resDTO;
     }
-
 
 }

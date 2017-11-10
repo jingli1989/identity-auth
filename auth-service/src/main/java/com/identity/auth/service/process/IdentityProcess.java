@@ -6,8 +6,10 @@ import com.identity.auth.channel.model.IdentityResDTO;
 import com.identity.auth.common.util.IdentityAuthResult;
 import com.identity.auth.dal.model.TBusinessOrderInfo;
 import com.identity.auth.member.model.ChannelInfoResDTO;
+import com.identity.auth.service.enums.FeeFlagEnum;
 import com.identity.auth.service.enums.ResCodeEnum;
 import com.identity.auth.service.manager.BusinessOrderManager;
+import com.identity.auth.service.model.ChannelProcessDTO;
 import com.identity.auth.service.model.req.IdentityAuthReqDTO;
 import com.identity.auth.service.model.res.IdentityAuthResDTO;
 import com.identity.auth.service.util.SerialNoUtil;
@@ -29,18 +31,55 @@ public class IdentityProcess {
     @Autowired
     private BusinessOrderManager businessOrderManager;
 
-    public IdentityAuthResDTO channelAuth(String tradeNo,IdentityAuthReqDTO reqDTO, ChannelInfoResDTO channelInfoResDTO){
+    /**
+     * 渠道认证
+     * @param tradeNo 订单号
+     * @param reqDTO 认证请求参数
+     * @param channelInfoResDTO 渠道信息
+     * @return 渠道处理结果
+     */
+    public ChannelProcessDTO channelAuth(String tradeNo,IdentityAuthReqDTO reqDTO, ChannelInfoResDTO channelInfoResDTO){
         IdentityReqDTO channelReq = buildReq(reqDTO,channelInfoResDTO.getChannelId());
         TBusinessOrderInfo orderInfo = businessOrderManager.createBusinessOrder(tradeNo,channelInfoResDTO.getChannelId());
         IdentityAuthResult<IdentityResDTO> result = channelFacade.identityAuth(channelReq);
         if(result.isSuccess()){
-            //todo 成功订单更新
-//            orderInfo.setFeeFlag();
-            return buildRes(result.getData());
+            IdentityResDTO resDTO = result.getData();
+            orderInfo.setFeeFlag(resDTO.getChannelFee()?FeeFlagEnum.Y.getCode():FeeFlagEnum.N.getCode());
+            orderInfo.setReqNo(resDTO.getChannelReqNo());
+            orderInfo.setResNo(resDTO.getChannelResNo());
+            orderInfo.setResCode(resDTO.getResCode());
+            orderInfo.setResMsg(resDTO.getResDesc());
+            orderInfo.setChannelTime(resDTO.getChannelTime());
+            businessOrderManager.updateBusinessOrder(orderInfo);
+            return buildProcessDTO(resDTO,orderInfo);
         }
-        //todo 失败订单更新
-        return null;
-//        businessOrderManager.updateBusinessOrder(tradeNo,channelInfoResDTO.getChannelId());
+        orderInfo.setFeeFlag(FeeFlagEnum.N.getCode());
+        orderInfo.setResCode(result.getErrorCode());
+        orderInfo.setResMsg(result.getErrorMsg());
+        return buildProcessDTO(null,orderInfo);
+    }
+
+    /**
+     * 构建渠道处理响应
+     * @param resDTO 渠道响应
+     * @param orderInfo 业务流水订单
+     * @return 渠道处理响应
+     */
+    private ChannelProcessDTO buildProcessDTO(IdentityResDTO resDTO,TBusinessOrderInfo orderInfo){
+        ChannelProcessDTO processDTO = new ChannelProcessDTO();
+        processDTO.setBusinessNo(orderInfo.getBusinessNo());
+        processDTO.setResCode(ResCodeEnum.AUTH_ERROR.getCode());
+        processDTO.setResMsg(ResCodeEnum.AUTH_ERROR.getDesc());
+        processDTO.setFeeFlag(FeeFlagEnum.N.getCode());
+        processDTO.setTradeNo(orderInfo.getTradeNo());
+        if(resDTO!=null){
+            ResCodeEnum resCodeEnum = buildResEnum(resDTO.getResCode());
+            String feeFlag = ResCodeEnum.AUTH_ERROR.getCode().equals(resCodeEnum.getCode())?FeeFlagEnum.N.getCode():FeeFlagEnum.Y.getCode();
+            processDTO.setFeeFlag(feeFlag);
+            processDTO.setResCode(resCodeEnum.getCode());
+            processDTO.setResMsg(resCodeEnum.getDesc());
+        }
+        return processDTO;
     }
 
     /**
@@ -58,20 +97,7 @@ public class IdentityProcess {
         return reqDTO;
     }
 
-    /**
-     * 封装响应
-     * @param res 渠道响应
-     * @return 封装后的响应
-     */
-    private IdentityAuthResDTO buildRes(IdentityResDTO res){
-        IdentityAuthResDTO resDTO = new IdentityAuthResDTO();
-        resDTO.setIdCard(res.getIdCard());
-        resDTO.setIdName(res.getIdName());
-        ResCodeEnum resCodeEnum = buildResEnum(res.getResCode());
-        resDTO.setResCode(resCodeEnum.getCode());
-        resDTO.setResMsg(resCodeEnum.getDesc());
-        return resDTO;
-    }
+
 
     /**
      * 错误码枚举转换
