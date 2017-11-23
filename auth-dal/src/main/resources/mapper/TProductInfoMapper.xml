@@ -30,7 +30,7 @@
       )
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.member.model.TProductInfo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.identity.auth.dal.model.TProductInfo">
     update t_product_info
     <set>
       <if test="productId != null">

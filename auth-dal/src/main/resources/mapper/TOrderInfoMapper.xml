@@ -103,4 +103,78 @@
     from t_order_info
     WHERE MEMBER_ID = #{memberId,jdbcType=VARCHAR} AND MEMBER_TRANS_ID = #{memberTransId,jdbcType=VARCHAR}
   </select>
+
+
+  <select id="selectCount" parameterType="Map" resultType="java.lang.Integer">
+    select
+    COUNT(ID)
+    from t_order_info
+    <where>
+      <if test="query.memberId != null">
+        AND MEMBER_ID = #{query.memberId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.memberTransId != null">
+        AND MEMBER_TRANS_ID = #{query.memberTransId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.productId != null">
+        AND PRODUCT_ID = #{query.productId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.tradeNo != null">
+        AND TRADE_NO = #{query.tradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.businessNo != null">
+        AND BUSINESS_NO = #{query.businessNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.orderStatus != null">
+        AND ORDER_STATUS = #{query.orderStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="query.feeFlag != null">
+        AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="queryTime.startTime != null">
+        AND CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="queryTime.endTime != null">
+        AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectByPage" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order_info
+    <where>
+      <if test="query.memberId != null">
+        AND MEMBER_ID = #{query.memberId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.memberTransId != null">
+        AND MEMBER_TRANS_ID = #{query.memberTransId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.productId != null">
+        AND PRODUCT_ID = #{query.productId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.tradeNo != null">
+        AND TRADE_NO = #{query.tradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.businessNo != null">
+        AND BUSINESS_NO = #{query.businessNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.orderStatus != null">
+        AND ORDER_STATUS = #{query.orderStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="query.feeFlag != null">
+        AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="queryTime.startTime != null">
+        AND CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="queryTime.endTime != null">
+        AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    ORDER BY CREATED_AT DESC
+    LIMIT #{page.page},#{page.pageNum}
+  </select>
 </mapper>

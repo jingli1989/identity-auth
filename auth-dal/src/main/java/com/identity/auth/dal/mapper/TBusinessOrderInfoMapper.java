@@ -1,5 +1,7 @@
 package com.identity.auth.dal.mapper;
 
+import com.identity.auth.dal.model.PageDTO;
+import com.identity.auth.dal.model.QueryTimeDTO;
 import com.identity.auth.dal.model.TBusinessOrderInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,4 +47,19 @@ public interface TBusinessOrderInfoMapper {
      */
     int updateByPrimaryKeySelective(TBusinessOrderInfo record);
 
+    /**
+     * 分页查询统计业务订单
+     * @param record 查询条件
+     * @return 统计结果
+     */
+    int selectCount(@Param(value = "query")TBusinessOrderInfo record, @Param(value = "queryTime")QueryTimeDTO queryTimeDTO);
+
+    /**
+     * 分页查询
+     * @param record 查询条件
+     * @param queryTimeDTO 时间条件
+     * @param pageDTO 分页条件
+     * @return 查询结果
+     */
+    List<TBusinessOrderInfo> selectByPage(@Param(value = "query")TBusinessOrderInfo record, @Param(value = "queryTime")QueryTimeDTO queryTimeDTO, @Param(value = "page")PageDTO pageDTO);
 }

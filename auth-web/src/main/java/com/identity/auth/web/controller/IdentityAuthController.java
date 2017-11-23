@@ -2,6 +2,7 @@ package com.identity.auth.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.identity.auth.common.annotation.SysLogId;
 import com.identity.auth.service.IdentityAuthService;
 import com.identity.auth.common.enums.ErrorCodeEnum;
 import com.identity.auth.common.exception.BusinessException;
@@ -45,19 +46,26 @@ public class IdentityAuthController {
      * @param body 认证请求信息
      * @return 认证结果
      */
+    @SysLogId("控制层-身份认证")
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
     public String auth(@RequestBody String body){
         IdentityAuthResult<IdentityAuthResDTO> result;
+        String securityKey = null;
         try {
             log.info("身份认证，请求:{}",body);
             HeaderAuthDTO authDTO = HeaderUtil.getHeaderReq(request);
             log.info("认证请求密文:{}",authDTO);
 
             IdentityAuthReqDTO reqDTO = objectMapper.readValue(body,IdentityAuthReqDTO.class);
-
-            IdentityAuthResDTO resDTO =identityAuthService.authReq(reqDTO,body,authDTO);
-            result = new IdentityAuthResult<>(resDTO);
-            log.info("身份认证，响应:{}",result);
+            securityKey = identityAuthService.getMemberSecurityKey(reqDTO.getMemberId());
+            boolean flag = HMacSHAUtil.HMacSHA256Check(body,authDTO.getAuthCode(),securityKey);
+            if(!flag){
+                result = new IdentityAuthResult<>(ErrorCodeEnum.PARAMS_ERROR.getCode(),"请求信息校验失败");
+            }else {
+                IdentityAuthResDTO resDTO = identityAuthService.authReq(reqDTO);
+                result = new IdentityAuthResult<>(resDTO);
+                log.info("身份认证，响应:{}", result);
+            }
         }catch (BusinessException be){
             result = new IdentityAuthResult<>(be.getCode(),be.getResMessage());
         }catch (Exception e){
@@ -65,10 +73,12 @@ public class IdentityAuthController {
         }
         try {
             String res = objectMapper.writeValueAsString(result);
-            String pwd = HMacSHAUtil.HMacSHA256(res,"123");
-            HeaderAuthDTO authDTO = new HeaderAuthDTO();
-            authDTO.setAuthCode(pwd);
-            HeaderUtil.setResponse(response,authDTO);
+            if(securityKey!=null) {
+                String pwd = HMacSHAUtil.HMacSHA256(res, securityKey);
+                HeaderAuthDTO authDTO = new HeaderAuthDTO();
+                authDTO.setAuthCode(pwd);
+                HeaderUtil.setResponse(response, authDTO);
+            }
             return res;
         } catch (JsonProcessingException e) {
             return "SYSTEM_ERROR";

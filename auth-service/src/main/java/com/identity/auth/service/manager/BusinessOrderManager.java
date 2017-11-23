@@ -20,13 +20,8 @@ import org.springframework.stereotype.Component;
 public class BusinessOrderManager {
 
     /** 业务流水数据库操作 */
-    private final TBusinessOrderInfoMapper businessOrderInfoMapper;
-
-
-    @Autowired
-    public BusinessOrderManager(TBusinessOrderInfoMapper businessOrderInfoMapper) {
-        this.businessOrderInfoMapper = businessOrderInfoMapper;
-    }
+    @Autowired(required = false)
+    private TBusinessOrderInfoMapper businessOrderInfoMapper;
 
 
     /**

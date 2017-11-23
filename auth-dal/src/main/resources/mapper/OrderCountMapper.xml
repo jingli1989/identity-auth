@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.identity.auth.dal.mapper.">
+  <resultMap id="BaseResultMap" type="com.identity.auth.dal.model.OrderCountDTO">
+    <id     column="ORDER_NUM"          jdbcType="INTEGER"      property="orderNum" />
+    <result column="MEMBER_ID"          jdbcType="VARCHAR"      property="memberId" />
+    <result column="PRODUCT_ID"         jdbcType="VARCHAR"      property="productId" />
+    <result column="ORDER_MONEY"        jdbcType="INTEGER"      property="orderMoney" />
+    <result column="ORDER_STATUS"       jdbcType="VARCHAR"      property="orderStatus" />
+    <result column="FEE_FLAG"           jdbcType="VARCHAR"      property="feeFlag" />
+    <result column="RES_CODE"           jdbcType="VARCHAR"      property="resCode" />
+    <result column="CHANNEL_ID"         jdbcType="VARCHAR"      property="channelId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORDER_NUM, MEMBER_ID, PRODUCT_ID, ORDER_MONEY, ORDER_STATUS,FEE_FLAG, RES_CODE, CHANNEL_ID
+  </sql>
+
+
+  <select id="countOrder" parameterType="Map" resultMap="BaseResultMap">
+    SELECT COUNT(ID) AS ORDER_NUM,
+    SUM(ORDER_MONEY) AS ORDER_MONEY,
+    MEMBER_ID,
+    PRODUCT_ID,
+    ORDER_STATUS,
+    FEE_FLAG
+    FROM t_order_info
+    WHERE CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+    AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+    <if test="query.memberId != null">
+      AND MEMBER_ID = #{query.memberId,jdbcType=VARCHAR}
+    </if>
+    <if test="query.productId != null">
+      AND PRODUCT_ID = #{query.productId,jdbcType=VARCHAR}
+    </if>
+    <if test="query.orderStatus != null">
+      AND ORDER_STATUS = #{query.orderStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="query.feeFlag != null">
+      AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="countChannel" parameterType="Map" resultMap="BaseResultMap">
+    SELECT COUNT(ID) AS ORDER_NUM,
+    CHANNEL_ID,
+    FEE_FLAG,
+    RES_CODE
+    FROM t_business_order_info
+    WHERE CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+    AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+    <if test="query.channelId != null">
+      AND CHANNEL_ID = #{query.channelId,jdbcType=VARCHAR}
+    </if>
+    <if test="query.feeFlag != null">
+      AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+    </if>
+    <if test="query.resCode != null">
+      AND RES_CODE = #{query.resCode,jdbcType=VARCHAR}
+    </if>
+    <if test="query.tradeNo != null">
+      AND TRADE_NO = #{query.tradeNo,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+</mapper>

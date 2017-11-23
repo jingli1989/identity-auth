@@ -1,5 +1,7 @@
 package com.identity.auth.dal.mapper;
 
+import com.identity.auth.dal.model.PageDTO;
+import com.identity.auth.dal.model.QueryTimeDTO;
 import com.identity.auth.dal.model.TOrderInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,4 +48,17 @@ public interface TOrderInfoMapper {
      */
     TOrderInfo selectByMemberTrans(@Param(value = "memberId")String memberId, @Param(value = "memberTransId")String memberTransId);
 
+    /**
+     * 分页查询时统计满足条件订单数
+     * @param record 查询条件
+     * @return 统计结果
+     */
+    int selectCount(@Param(value = "query")TOrderInfo record,@Param(value = "queryTime")QueryTimeDTO queryTimeDTO);
+
+    /**
+     * 分页查询
+     * @param record 查询条件
+     * @return 查询结果
+     */
+    List<TOrderInfo> selectByPage(@Param(value = "query")TOrderInfo record,@Param(value = "queryTime")QueryTimeDTO queryTimeDTO,@Param(value = "page")PageDTO pageDTO);
 }

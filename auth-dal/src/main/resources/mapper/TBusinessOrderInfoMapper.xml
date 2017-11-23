@@ -76,4 +76,66 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectCount" parameterType="Map" resultType="java.lang.Integer">
+    select
+    COUNT(ID)
+    from t_business_order_info
+    <where>
+      <if test="query.channelId != null">
+        AND CHANNEL_ID = #{query.channelId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.feeFlag != null">
+        AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="query.resCode != null">
+        AND RES_CODE = #{query.resCode,jdbcType=VARCHAR}
+      </if>
+      <if test="query.tradeNo != null">
+        AND TRADE_NO = #{query.tradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.businessNo != null">
+        AND BUSINESS_NO = #{query.businessNo,jdbcType=VARCHAR}
+      </if>
+      <if test="queryTime.startTime != null">
+        AND CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="queryTime.endTime != null">
+        AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPage" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_business_order_info
+    <where>
+      <if test="query.channelId != null">
+        AND CHANNEL_ID = #{query.channelId,jdbcType=VARCHAR}
+      </if>
+      <if test="query.feeFlag != null">
+        AND FEE_FLAG = #{query.feeFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="query.resCode != null">
+        AND RES_CODE = #{query.resCode,jdbcType=VARCHAR}
+      </if>
+      <if test="query.tradeNo != null">
+        AND TRADE_NO = #{query.tradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="query.businessNo != null">
+        AND BUSINESS_NO = #{query.businessNo,jdbcType=VARCHAR}
+      </if>
+      <if test="queryTime.startTime != null">
+        AND CREATED_AT &gt;= #{queryTime.startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="queryTime.endTime != null">
+        AND CREATED_AT &lt; #{queryTime.endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    ORDER BY CREATED_AT DESC
+    LIMIT #{page.page},#{page.pageNum}
+  </select>
+
 </mapper>

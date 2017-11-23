@@ -11,6 +11,14 @@ public class RegexUtil {
     public static final String ID_NAME = "[\\u4E00-\\u9FA5A-Za-z]";
 //    商户号正则校验
     public static final String MEMBER_ID = "[a-zA-Z0-9]{10,32}";
+    //产品id正则校验
+    public static final String PRODUCT_ID = "[a-zA-Z0-9]{2,16}";
+    //渠道id正则校验
+    public static final String CHANNEL_ID = "[a-zA-Z0-9]{2,16}";
+    //订单状态正则校验
+    public static final String ORDER_STATUS = "(INIT|SUCCESS|FAIL)";
+    //收费标识正则校验
+    public static final String FEE_FLAG = "(Y|N)";
 //    订单号正则校验
     public static final String TRANS_ID = "[a-zA-Z0-9]{10,32}";
 //时间正则校验

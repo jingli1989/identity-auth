@@ -29,7 +29,7 @@
 		<auth.web.version>1.0.0-SNAPSHOT</auth.web.version>
 
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
-		
+
         <lombok.version>1.16.4</lombok.version>
         <apache.commons.lang3>3.3.2</apache.commons.lang3>
         <junit.version>4.11</junit.version>
@@ -49,6 +49,8 @@
         <mysql.connector.version>5.1.38</mysql.connector.version>
         <spring.boot.version>1.5.6.RELEASE</spring.boot.version>
         <org.springframework.version>4.2.1.RELEASE</org.springframework.version>
+        <!--启动类-->
+        <start.class>com.identity.auth.web.AppService</start.class>
     </properties>
 
     <dependencyManagement>
@@ -228,7 +230,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>12.0.1</version>
+                <version>18.0</version>
             </dependency>
             <!--谷歌工具包 end -->
 

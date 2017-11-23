@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>身份认证管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <!--<link rel="stylesheet" href="css/ionicons.css">-->
+    <!--<link rel="stylesheet" href="css/jquery-jvectormap-1.css">-->
+    <link rel="stylesheet" href="css/AdminLTE.css">
+    <!--<link rel="stylesheet" href="css/morris.css">-->
+    <link rel="stylesheet" href="css/_all-skins.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!--<link rel="stylesheet" href="css/bootstrap-datetimepicker.css">-->
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/date-input.js"></script>
+</head>
+<body class="skin-blue sidebar-mini">
+<!--页首-->
+<div id="header">
+
+    <header class="main-header">
+        <div class="d-back">返回顶部</div>
+        <a href="#" class="logo"> <span class="logo-mini"><b>认证</b>订单管理</span> <span
+                class="logo-lg"><b>认证</b>订单管理</span> </a>
+        <nav class="navbar navbar-static-top"><a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+                                                 role="button"> <span class="sr-only">Toggle navigation</span> </a>
+            <div class="d-tab"><span class="d-select">订单管理</span> <span class="d-tabser"
+                                                                        style="display: none;">统计分析</span></div>
+            <!--<div class="navbar-custom-menu">-->
+                <!--<ul class="nav navbar-nav">-->
+                    <!--<li class="dropdown user user-menu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+                        <!--&lt;!&ndash;<img src="img/logo.png"&ndash;&gt;-->
+                             <!--&lt;!&ndash;class="user-image" alt="User Image"> <span>宝付(测试)</span> </a>&ndash;&gt;-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--&lt;!&ndash;<li class="user-header"><img&ndash;&gt;-->
+                                    <!--&lt;!&ndash;src="img/logo.png"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;class="img-circle" alt="User Image">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<p> 宝付(测试) </p></li>&ndash;&gt;-->
+                            <!--<li class="user-footer">-->
+                                <!--<div class="pull-right"><a id="logutBtn" class="btn btn-default btn-flat">注销</a>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </nav>
+        <script type="text/javascript">             $("#logutBtn").click(function () {
+            window.location.href = "login.html";
+        });         </script>
+    </header>
+</div>
+<!--左侧栏-->
+<div id="sideMenu">
+    <aside class="main-sidebar">     <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">       <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" id="sidebar-menu">         <!--<li _tmplitem="16"  class="header">主页</li>-->
+                <li id="function-center" class="" style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;"><a
+                        href="javascript:;"> <i class="fa fa-dashboard"></i><span>全部</span> <span
+                        class="pull-right-container" style="display: inherit;">               <i
+                        class="fa fa-angle-right pull-right"></i>             </span> </a></li>
+                <li class="header" style="background: rgb(26, 34, 38) none repeat scroll 0% 0%;">菜单</li>
+                <li id="member-order" style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="">
+                    <!--<a _tmplitem="3"  href="index.html?id=EMAIL">--> <a href="javascript:changeBusiness('member-order');"> <img
+                        src="img/mail.png"
+                        class="fa mx-naviicon"><span>商户订单查询</span> <span class="pull-right-container"
+                                                                       style="display:none;">             <i
+                        class="fa fa-angle-right pull-right"></i>             </span> </a></li>
+                <li id="channel-order" style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="">
+                    <!--<a _tmplitem="4"  href="index.html?id=BANK">--> <a href="javascript:changeBusiness('channel-order');"> <img
+                        src="img/bank.png"
+                        class="fa mx-naviicon"><span>渠道订单查询</span> <span class="pull-right-container"
+                                                                     style="display:none;">             <i
+                        class="fa fa-angle-right pull-right"></i>             </span> </a></li>
+                <li id="member-order-count" style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="">
+                    <!--<a _tmplitem="4"  href="index.html?id=BANK">--> <a href="javascript:changeBusiness('member-order-count');"> <img
+                        src="img/bank.png"
+                        class="fa mx-naviicon"><span>商户订单统计</span> <span class="pull-right-container"
+                                                                         style="display:none;">             <i
+                        class="fa fa-angle-right pull-right"></i>             </span> </a></li>
+                <li id="channel-order-count" style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="">
+                    <!--<a _tmplitem="4"  href="index.html?id=BANK">--> <a href="javascript:changeBusiness('channel-order-count');"> <img
+                        src="img/bank.png"
+                        class="fa mx-naviicon"><span>渠道订单统计</span> <span class="pull-right-container"
+                                                                         style="display:none;">             <i
+                        class="fa fa-angle-right pull-right"></i>             </span> </a></li>
+
+            </ul>
+        </section>
+    </aside>
+    <input type="hidden" id="taskType"/>
+</div>
+<div class="content-wrapper" style="min-height: 922px;">
+    <div class="d-hide">
+        <div class="form-group">
+            <div style="text-align:center;margin-top:15px; margin-left:15px; display:inline-table;">
+                <label>查询条件:</label>
+            </div>
+            <div style="text-align:center;margin-top:15px; margin-left:100px;">
+                <label id="member">商    户    号:</label>
+                <input name="member_id"  id="member_id" type="text">
+                <label id="product">城市名称:</label>
+                <input name="product_id"  id="product_id" type="text">
+                <label >收费标识:</label>
+                <select id="fee_flag">
+                    <option selected>ALL</option>
+                    <option value="Y">收费</option>
+                    <option value="N">不收费</option>
+                </select>
+                <label>订单状态:</label>
+                <select id="order_status_select">
+                    <option selected>ALL</option>
+                    <option value="INIT">初始化</option>
+                    <option value="SUCCESS">成功</option>
+                    <option value="FAIL">失败</option>
+                </select>
+            </div>
+            <div style="text-align:center;margin-top:15px; margin-left:100px;">
+                <label>开始时间:</label>
+                <input name="start_time"  id="start_time" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')" type="text">
+                <label>结束时间:</label>
+                <input name="end_time"  id="end_time" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')" type="text">
+            </div>
+        </div>
+        <div class="input-group"
+             style="text-align:center;margin-top:15px;display:inline-table;">
+            <span class="input-group-btn" style="width: 80px">
+                <button id="taskSearchButton" type="button" class="btn btn-info btn-flat" style="margin-bottom:15px;" onclick="queryConfig()">查询</button>
+            </span>
+            <span class="input-group-btn" style="width: 80px">
+                <button id="taskUpdateButton" type="button" class="btn btn-info btn-flat" style="margin-bottom:15px;" onclick="openDiv(false)">修改</button>
+            </span>
+             <span class="input-group-btn" style="width: 80px">
+                 <button id="taskAddButton" type="button" class="btn btn-info btn-flat" style="margin-bottom:15px;" onclick="openDiv(true)">新增</button>
+              </span>
+        </div>
+    </div>
+    <div style="height: 20px;text-align: center;" >
+    </div>
+    <div class="table-responsive">
+        <table id="resultTable" class="table no- nomarg" border="1px">
+            <thead >
+            <tr >                 <!--查询任务的参数-->
+                <th hidden="hidden" ></th>
+                <th>商户号</th>
+                <th>商户订单号</th>
+                <th>商户订单时间</th>
+                <th>产品编号</th>
+                <th>系统流水号</th>
+                <th>业务流水号</th>
+                <th>订单状态</th>
+                <th>订单时间</th>
+                <th>收费标识</th>
+                <th>响应编码</th>
+                <th>响应描述</th>
+            </tr>
+            </thead>
+            <tbody id="resultBody" ></tbody>
+        </table>
+    </div>
+</div>
+<!--页尾-->
+<div id="footer">
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs"><b>Version</b> 1.0.0</div>
+        <strong>Copyright © 2017 <a href="http://www.baidu.com/">身份认证</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<tmpl>
+    <script type="text/html" id="resultTmpl">
+        <tr >
+            <td class="d-st" hidden="hidden" >${id}</td>
+            <td class="d-st">${member_id}</td>
+            <td class="d-st">${member_trans_id}</td>
+            <td class="d-st">${member_trans_date}</td>
+            <td class="d-st">${product_id}</td>
+            <td class="d-st">${order_money}</td>
+            <td class="d-st">${trade_no}</td>
+            <td class="d-st">${business_no}</td>
+            <td class="d-st">${order_status}</td>
+            <td class="d-st">${fee_flag}</td>
+            <td class="d-st">${res_code}</td>
+            <td class="d-st">${res_msg}</td>
+            <td class="d-st">${created_at}</td>
+
+        </tr>
+    </script>
+</tmpl>
+
+<tmpl id="resultTmpl2">
+    <script type="text/html" id="carrierResultTmpl2">
+        <tr >
+            <td class="d-st" >${member_id}</td>
+            <td class="d-st">${product_id}</td>
+            <td class="d-st">${order_status}</td>
+            <td class="d-st">${order_num}</td>
+            <td class="d-st">${order_money}</td>
+            <!--<td class="d-st">${needIdCard}</td>-->
+            <td class="d-st">${fee_flag}</td>
+            <td class="d-st">${res_code}</td>
+        </tr>
+    </script>
+</tmpl>
+</body>
+</html>

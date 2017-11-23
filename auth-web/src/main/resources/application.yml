@@ -7,9 +7,9 @@ spring:
   mvc:
     favicon:
       enabled: false
+#    static-path-pattern: /resources/**
   jmx:
     enabled: false
-
 server:
   port: 33102
   context-path: /identity-auth
